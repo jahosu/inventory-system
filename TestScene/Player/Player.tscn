@@ -1,0 +1,61 @@
+[gd_scene load_steps=6 format=3 uid="uid://dvdp7mw5wu4g7"]
+
+[ext_resource type="Texture2D" uid="uid://d1brynw572smu" path="res://icon.svg" id="1_hnmx1"]
+[ext_resource type="Script" path="res://TestScene/Player/Player.gd" id="1_yobv6"]
+[ext_resource type="PackedScene" uid="uid://bhhg4wbk7yskw" path="res://Inventory/Tooltip/Tooltip.tscn" id="3_5vh7d"]
+[ext_resource type="PackedScene" uid="uid://cb8vtncgwgknh" path="res://Inventory/Inventory.tscn" id="3_435wv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hshhu"]
+radius = 83.0
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("inventory")]
+script = ExtResource("1_yobv6")
+inventory = NodePath("CanvasLayer/Inventory")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_hnmx1")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_hshhu")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Inventory2" parent="CanvasLayer" node_paths=PackedStringArray("tooltip", "cursor") instance=ExtResource("3_435wv")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 118.0
+offset_top = 452.0
+offset_right = 182.0
+offset_bottom = 516.0
+grow_horizontal = 1
+grow_vertical = 1
+columns = 2
+rows = 2
+cols = 2
+tooltip = NodePath("../Cursor/Tooltip")
+cursor = NodePath("../Cursor")
+
+[node name="Inventory" parent="CanvasLayer" node_paths=PackedStringArray("tooltip", "cursor") instance=ExtResource("3_435wv")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 792.0
+offset_top = 299.0
+offset_right = 856.0
+offset_bottom = 363.0
+columns = 8
+rows = 4
+cols = 8
+tooltip = NodePath("../Cursor/Tooltip")
+cursor = NodePath("../Cursor")
+
+[node name="Cursor" type="Marker2D" parent="CanvasLayer"]
+position = Vector2(930.063, 225.188)
+
+[node name="Tooltip" parent="CanvasLayer/Cursor" instance=ExtResource("3_5vh7d")]
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
