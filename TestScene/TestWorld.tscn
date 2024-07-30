@@ -10,6 +10,7 @@ script = ExtResource("1_ry4x2")
 
 [node name="TestItem" parent="." instance=ExtResource("3_5q7m5")]
 position = Vector2(203, 153)
+item_name = "Pious Water"
 
 [node name="TestItem2" parent="." instance=ExtResource("3_5q7m5")]
 position = Vector2(203, 153)

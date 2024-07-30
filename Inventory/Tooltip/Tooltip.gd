@@ -6,11 +6,7 @@ class_name Tooltip
 @onready var item_name: Label = $MarginContainer/Label
 
 
-func _ready():
-	self.global_position += Vector2.ONE * 16
-
-
-func set_tooltip(_text: String):
+func set_text(_text: String):
 	self.item_name.text = _text
 	margin_container.size = Vector2()
 	size = margin_container.size

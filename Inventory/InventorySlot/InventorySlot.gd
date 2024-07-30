@@ -19,10 +19,28 @@ func set_item(new_item: InventoryItem):
 	update_slot()
 
 
-
 func remove_item():
 	item = null
 	update_slot()
+
+
+# Removes item from slot and returns it.
+func select_item():
+	var tmp := self.item
+	if tmp:
+		self.remove_child(self.item)
+		self.item = null
+	return tmp
+
+
+# Is slot empty (has no item)
+func is_empty():
+	return self.item == null
+
+
+# Has same kind of item?
+func has_same_item(_item: InventoryItem):
+	_item.item_name == self.item.item_name
 
 
 func update_slot():
@@ -34,13 +52,9 @@ func update_slot():
 		item.label.text = str(item.amount) + " - " + str(item.name)
 
 
-
 # On slot button pressed
 func _on_texture_button_pressed():
 	slot_pressed.emit(self)
-
-
-
 
 
 func _on_texture_button_mouse_entered():
