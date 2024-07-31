@@ -4,6 +4,14 @@ var speed = 200
 
 @export var inventory: Inventory
 
+@export var test_hint_item: InventoryItem
+
+func _ready():
+	test_hint_item.get_parent().remove_child.call_deferred(test_hint_item)
+	test_hint_item.name = "test"
+	inventory.slots[0].set_item_hint.call_deferred(test_hint_item)
+
+
 func _process(delta):
 	velocity *= 0
 	if Input.is_action_pressed("ui_right"):
@@ -20,6 +28,9 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("ui_home"):
 		inventory.visible = not inventory.visible
+	
+	if Input.is_action_just_pressed("ui_end"):
+		var item: Item = inventory.retrieve_item("Amulet")
 
 
 func _on_area_2d_body_entered(body):

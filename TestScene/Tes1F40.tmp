@@ -1,15 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://6wd0kccr30wj"]
+[gd_scene load_steps=5 format=3 uid="uid://6wd0kccr30wj"]
 
 [ext_resource type="Script" path="res://TestScene/TestWorld.gd" id="1_ry4x2"]
 [ext_resource type="PackedScene" uid="uid://c5sd0cdi2efid" path="res://Items/TestItem.tscn" id="3_5q7m5"]
 [ext_resource type="PackedScene" uid="uid://dvdp7mw5wu4g7" path="res://TestScene/Player/Player.tscn" id="4_b3s1x"]
 [ext_resource type="PackedScene" uid="uid://4wgkn6w2kwum" path="res://Items/Cheerryu.tscn" id="4_sn150"]
-[ext_resource type="PackedScene" uid="uid://dxa28mq6jco3o" path="res://Inventory/InventorySlot/InventoryItem/InventoryItem.tscn" id="5_q8iq1"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_t6b6a"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jvvh1"]
-noise = SubResource("FastNoiseLite_t6b6a")
 
 [node name="TestWorld" type="Node2D"]
 script = ExtResource("1_ry4x2")
@@ -28,16 +22,9 @@ is_stackable = false
 position = Vector2(203, 153)
 item_name = "Cursed Apple"
 
-[node name="Player" parent="." node_paths=PackedStringArray("test_hint_item") instance=ExtResource("4_b3s1x")]
+[node name="Player" parent="." instance=ExtResource("4_b3s1x")]
 position = Vector2(374, 396)
-test_hint_item = NodePath("../InventoryItem")
 
 [node name="TestItem4" parent="." instance=ExtResource("4_sn150")]
 position = Vector2(84, 252)
 item_name = "Amulet"
-
-[node name="InventoryItem" parent="." instance=ExtResource("5_q8iq1")]
-amount = 3
-item_name = "Pupy"
-icon = SubResource("NoiseTexture2D_jvvh1")
-is_stackable = true
