@@ -56,33 +56,11 @@ func add_item(item: Item, amount: int):
 func _on_slot_pressed(which: InventorySlot):
 	# If selected_item != null, it measn that previous call to this func was made
 	# and we are trying to move the item to another slot
-	if selected_item: # if item already selected
-		if not which.is_empty(): # if this slot is not empty
-			if which.has_same_item(selected_item): # if both items are same
-				which.set_item(selected_item)
-				selected_item.free()
-				selected_item = null
-				print("Stacked items: ", which.item.item_name, which.item.amount)
-			else:
-				# If the items are different, we swap them
-				self.remove_child(selected_item)
-				var temp_item = selected_item
-				selected_item = which.item
-				which.remove_child(which.item)
-				which.set_item(temp_item)
-				self.add_child(selected_item)
-				print("Swapped items: ", selected_item.item_name, which.item.item_name)
-				# Update UI?
-		else:
-			# If the slot is empty, we move the item
-			selected_item.get_parent().remove_child(selected_item) # its parent is not necessarily 'self', but can be other inventory
-			which.set_item(selected_item)
-			selected_item = null
-	else:
-		# If selected_item == null, it means that we are selecting an item:
+	if not selected_item: # if not item already selected
 		selected_item = which.select_item()
-		self.add_child(selected_item)
-		print("Selected item: ", selected_item.item_name)
+	else:
+		selected_item = which.deselect_item(selected_item)
+
 
 
 
