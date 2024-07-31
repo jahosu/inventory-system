@@ -11,12 +11,34 @@ signal slot_pressed(which: InventorySlot)
 signal slot_hovered(which: InventorySlot, is_hovering: bool)
 
 
+
 func _ready():
 	add_to_group("inventory_slots")
 
 
+
+
+# On slot button pressed
+func _on_texture_button_pressed():
+	slot_pressed.emit(self)
+
+
+
+func _on_texture_button_mouse_entered():
+	slot_hovered.emit(self, true)
+
+
+
+func _on_texture_button_mouse_exited():
+	slot_hovered.emit(self, false)
+
+
+
+
 # Is it having same type and amount as indicated by the hint_item
 func is_respecting_hint(new_item: InventoryItem, in_amount_as_well: bool = true) -> bool:
+	if not hint_item:
+		return true
 	if in_amount_as_well:
 		return (
 			new_item.item_name == self.hint_item.item_name
@@ -26,6 +48,8 @@ func is_respecting_hint(new_item: InventoryItem, in_amount_as_well: bool = true)
 		return new_item.item_name == self.hint_item.item_name
 
 
+
+# Sets hint item
 func set_item_hint(new_item_hint: InventoryItem):
 	if self.hint_item:
 		self.hint_item.free()
@@ -34,20 +58,22 @@ func set_item_hint(new_item_hint: InventoryItem):
 	update_slot()
 
 
-func set_item(new_item: InventoryItem):
-	if self.item and self.item.item_name == new_item.item_name:
-		self.item.amount += new_item.amount
-	else:
-		item = new_item
+# Deletes hint item
+func clear_item_hint():
+	if self.hint_item:
+		self.hint_item.free()
+	self.hint_item = null
 	update_slot()
 
 
 
+# Removes item from slot
 func remove_item():
 	self.remove_child(item)
 	item.free()
 	item = null
 	update_slot()
+
 
 
 
@@ -58,16 +84,24 @@ func select_item() -> InventoryItem:
 	if tmp_item:
 		tmp_item.reparent(inventory)
 		self.item = null
+	tmp_item.z_index = 128
+	# Show it above other items
 	return tmp_item
 
 
 
-# If swap, then retur swapped item, else return null
+
+
+# If swap, then returb swapped item, else return null and add new item
 func deselect_item(new_item: InventoryItem) -> InventoryItem:
+	if not is_respecting_hint(new_item):
+		return new_item # Do nothing
+	
 	var inventory = self.get_parent().get_parent() # Inventory
 	if self.is_empty():
 		new_item.reparent(self)
 		self.item = new_item
+		self.item.z_index = 64
 		return null
 	else:
 		if self.has_same_item(new_item): # if both items are same
@@ -79,7 +113,10 @@ func deselect_item(new_item: InventoryItem) -> InventoryItem:
 			self.item.reparent(inventory) # make old thing inventory child
 			var tmp_item = self.item
 			self.item = new_item
+			new_item.z_index = 64 # Reset its z index
+			tmp_item.z_index = 128 # Update swapped item's z index
 			return tmp_item
+
 
 
 
@@ -90,9 +127,12 @@ func is_empty():
 
 
 
-# Has same kind of item?
+
+# Has same kind of item? (same name)
 func has_same_item(_item: InventoryItem):
 	_item.item_name == self.item.item_name
+
+
 
 
 
@@ -112,16 +152,3 @@ func update_slot():
 			add_child(hint_item)
 		hint_item.fade() # Visually look faded
 
-# On slot button pressed
-func _on_texture_button_pressed():
-	slot_pressed.emit(self)
-
-
-
-func _on_texture_button_mouse_entered():
-	slot_hovered.emit(self, true)
-
-
-
-func _on_texture_button_mouse_exited():
-	slot_hovered.emit(self, false)

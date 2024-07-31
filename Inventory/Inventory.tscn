@@ -22,10 +22,9 @@ grow_vertical = 2
 columns = 6
 
 [node name="Tooltip" parent="." instance=ExtResource("3_oh8lo")]
-z_index = 32
 layout_mode = 0
-offset_left = -317.79
-offset_top = 543.335
-offset_right = -317.79
-offset_bottom = 607.335
+offset_left = 412.066
+offset_top = 401.025
+offset_right = 412.066
+offset_bottom = 465.025
 mouse_filter = 2

@@ -32,6 +32,19 @@ func _ready():
 
 
 
+
+func _process(delta):
+	tooltip.global_position = get_global_mouse_position() + Vector2.ONE * 8
+	
+	if selected_item:
+		tooltip.visible = false
+		selected_item.global_position = get_global_mouse_position()
+
+
+
+
+
+
 func _on_slot_pressed(which: InventorySlot):
 	if not selected_item:
 		selected_item = which.select_item()
@@ -45,15 +58,9 @@ func _on_slot_hovered(which: InventorySlot, is_hovering: bool):
 	if which.item:
 		tooltip.set_text(which.item.item_name)
 		tooltip.visible = is_hovering
-
-
-
-func _process(delta):
-	tooltip.global_position = get_global_mouse_position() + Vector2.ONE * 8
-	
-	if selected_item:
-		tooltip.visible = false
-		selected_item.global_position = get_global_mouse_position()
+	elif which.hint_item:
+		tooltip.set_text(which.hint_item.item_name)
+		tooltip.visible = is_hovering
 
 
 
@@ -61,7 +68,7 @@ func _process(delta):
 
 # API::
 
-# OUTSIDE TO INVENTORY:
+# !DESTRUCTUVE (removes item itself from world  and adds its copy to inventory)
 # Calling thius func impies that item is not already in inventory
 func add_item(item: Item, amount: int) -> void:
 	var _item: InventoryItem = inventory_item_scene.instantiate() # Duplicate
@@ -69,20 +76,23 @@ func add_item(item: Item, amount: int) -> void:
 		item.item_name, item.icon, item.is_stackable, amount
 	)
 	
-	item.queue_free() # Consume the item by inventory
+	item.queue_free() # Consume the item by inventory (by the end of frame)
 	
 	if item.is_stackable:
 		for slot in slots:
-			if slot.item and slot.item.item_name == _item.item_name:
-				slot.set_item(_item)
+			if slot.item and slot.item.item_name == _item.item_name: # if item and is of same type
+				slot.item.amount += _item.amount
 				return
 	for slot in slots:
-		if slot.item == null:
-			slot.set_item(_item)
+		if slot.item == null and slot.is_respecting_hint(_item):
+			slot.item = _item
+			slot.update_slot()
 			return
 
 
-# A function to remove item from inventory and return if it exists
+
+# !DESTRUCTUVE (removes from inventory if retrieved)
+#A function to remove item from inventory and return if it exists
 func retrieve_item(_item_name: String) -> Item:
 	for slot in slots:
 		if slot.item and slot.item.item_name == _item_name:
@@ -100,4 +110,37 @@ func retrieve_item(_item_name: String) -> Item:
 	return null
 
 
+
+# !NON-DESTRUCTIVE (read-only function) to get all items in inventory
+func all_items() -> Array[Item]:
+	var items: Array[Item] = []
+	for slot in slots:
+		if slot.item:
+			items.append(slot.item)
+	return items
+
+
+
+# ! NON-DESTRUCTUVE (read-only), returns all items of a particular type
+func all(_name: String) -> Array[Item]:
+	var items: Array[Item] = []
+	for slot in slots:
+		if slot.item and slot.item.item_name == _name:
+			items.append(slot.item)
+	return items
+
+
+
+# !DESTRUCTUVE (removes all items of a particular type)
+func remove_all(_name: String) -> void:
+	for slot in slots:
+		if slot.item and slot.item.item_name == _name:
+			slot.remove_item()
+
+
+
+# !DESTRUCTUVE (removes all items from inventory)
+func clear_inventory() -> void:
+	for slot in slots:
+		slot.remove_item()
 

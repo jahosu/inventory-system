@@ -29,5 +29,5 @@ func set_sprite_size_to(sprite: Sprite2D, size: Vector2):
 
 
 func fade():
-	self.sprite.modulate = Color(1, 1, 1, 0.5)
-	self.label.modulate = Color(1, 1, 1, 0.5)
+	self.sprite.modulate = Color(1, 1, 1, 0.4)
+	self.label.modulate = Color(1, 1, 1, 0.4)
