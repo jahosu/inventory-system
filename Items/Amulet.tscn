@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://c5sd0cdi2efid"]
 
-[ext_resource type="Script" path="res://Items/Item.gd" id="1_70688"]
-[ext_resource type="Texture2D" uid="uid://d1brynw572smu" path="res://icon.svg" id="2_2gmw2"]
+[ext_resource type="Script" path="res://Items/Item.gd" id="1_6jssa"]
+[ext_resource type="Texture2D" uid="uid://d1brynw572smu" path="res://icon.svg" id="2_b3g0k"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_uio5q"]
 load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"
@@ -9,10 +9,10 @@ load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.cte
 [sub_resource type="CircleShape2D" id="CircleShape2D_ww0on"]
 radius = 26.0192
 
-[node name="TestItem" type="Area2D"]
-script = ExtResource("1_70688")
-item_name = "Test item"
-icon = ExtResource("2_2gmw2")
+[node name="Amulet" type="Area2D"]
+script = ExtResource("1_6jssa")
+item_name = "Amulet"
+icon = ExtResource("2_b3g0k")
 is_stackable = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

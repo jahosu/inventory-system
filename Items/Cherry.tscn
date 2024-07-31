@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://4wgkn6w2kwum"]
+
+[ext_resource type="Script" path="res://Items/Item.gd" id="1_0kuvr"]
+[ext_resource type="Texture2D" uid="uid://d1brynw572smu" path="res://icon.svg" id="2_hm04i"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_vc6bx"]
+load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.s3tc.ctex"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ww0on"]
+radius = 26.0192
+
+[node name="Cherry" type="Area2D"]
+modulate = Color(0.52549, 0, 0.0627451, 1)
+script = ExtResource("1_0kuvr")
+item_name = "Cherry"
+icon = SubResource("CompressedTexture2D_vc6bx")
+is_stackable = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_hm04i")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ww0on")

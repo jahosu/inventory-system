@@ -1,13 +1,22 @@
 extends Control
 class_name InventorySlot
 
+# So its copy can be instanced while splitting
+@export var inventory_item_scene: PackedScene = preload("res://Inventory/InventorySlot/InventoryItem/InventoryItem.tscn")
+
 @export var item: InventoryItem
 @export var hint_item: InventoryItem = null
 
 # hint_item SERVE TO RESTRICT A SLOT TO ONLY
 # ACCEPT THE TYPE OF ITEM REPRESENTED BY THE hint_item
 
-signal slot_pressed(which: InventorySlot)
+
+enum InventorySlotAction {
+	SELECT, SPLIT
+}
+
+
+signal slot_pressed(which: InventorySlot, action: InventorySlotAction)
 signal slot_hovered(which: InventorySlot, is_hovering: bool)
 
 
@@ -16,11 +25,17 @@ func _ready():
 	add_to_group("inventory_slots")
 
 
-
-
-# On slot button pressed
-func _on_texture_button_pressed():
-	slot_pressed.emit(self)
+# When slot is pressed
+func _on_texture_button_gui_input(event):
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			slot_pressed.emit(
+				self, InventorySlotAction.SELECT
+			)
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			slot_pressed.emit(
+				self, InventorySlotAction.SPLIT
+			)
 
 
 
@@ -84,7 +99,7 @@ func select_item() -> InventoryItem:
 	if tmp_item:
 		tmp_item.reparent(inventory)
 		self.item = null
-	tmp_item.z_index = 128
+		tmp_item.z_index = 128
 	# Show it above other items
 	return tmp_item
 
@@ -105,6 +120,7 @@ func deselect_item(new_item: InventoryItem) -> InventoryItem:
 		return null
 	else:
 		if self.has_same_item(new_item): # if both items are same
+			print("Has same item")
 			self.item.amount += new_item.amount
 			new_item.free()
 			return null
@@ -119,6 +135,27 @@ func deselect_item(new_item: InventoryItem) -> InventoryItem:
 
 
 
+# Split means selecting half amount
+func split_item() -> InventoryItem:
+	if self.is_empty():
+		return null
+	var inventory = self.get_parent().get_parent() # Inventory
+	if self.item.amount > 1:
+		var new_item: InventoryItem = inventory_item_scene.instantiate()
+		new_item.set_data(
+			self.item.item_name, self.item.icon,
+			self.item.is_stackable, self.item.amount
+		) # Because .duplicate() is buggy (doesnt make it unique0 thats why duplicating via this way
+		new_item.amount = self.item.amount / 2
+		self.item.amount -= new_item.amount
+		inventory.add_child(new_item)
+		new_item.z_index = 128
+		return new_item
+	elif self.item.amount == 1:
+		return self.select_item()
+	else:
+		return null
+
 
 
 # Is slot empty (has no item)
@@ -130,7 +167,7 @@ func is_empty():
 
 # Has same kind of item? (same name)
 func has_same_item(_item: InventoryItem):
-	_item.item_name == self.item.item_name
+	return _item.item_name == self.item.item_name
 
 
 
