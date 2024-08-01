@@ -15,7 +15,10 @@ var slots: Array[InventorySlot]
 
 @export var tooltip: Tooltip # Must be shared among all instanesself
 
+
+
 static var selected_item: Item = null
+static var highlighted_slot: InventorySlot = null
 
 
 
@@ -25,8 +28,9 @@ func _ready():
 		var slot = inventory_slot_scene.instantiate()
 		slots.append(slot)
 		inventory_grid.add_child(slot)
-		slot.slot_pressed.connect(self._on_slot_pressed) # binding not necessary as
+		slot.slot_input.connect(self._on_slot_input) # binding not necessary as
 		slot.slot_hovered.connect(self._on_slot_hovered) # it does while emit() call
+		
 		
 	tooltip.visible = false
 
@@ -45,8 +49,9 @@ func _process(delta):
 
 
 
-func _on_slot_pressed(which: InventorySlot, action: InventorySlot.InventorySlotAction):
+func _on_slot_input(which: InventorySlot, action: InventorySlot.InventorySlotAction):
 	print(action)
+	# Select/deselect items
 	if not selected_item:
 		# Spliting only occurs if not item selected already
 		if action == InventorySlot.InventorySlotAction.SELECT:
@@ -55,7 +60,6 @@ func _on_slot_pressed(which: InventorySlot, action: InventorySlot.InventorySlotA
 			selected_item = which.split_item() # Split means selecting half amount
 	else:
 		selected_item = which.deselect_item(selected_item)
-
 
 
 
@@ -148,4 +152,34 @@ func remove_all(_name: String) -> void:
 func clear_inventory() -> void:
 	for slot in slots:
 		slot.remove_item()
+
+
+
+
+
+# Inventory-wide GUI input (for changing highlighted slots)
+func _on_gui_input(event):
+	# Update highlighted slot
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			var current_slot_index: int = 0
+			for i in range(slots.size()):
+				if slots[i] == highlighted_slot:
+					current_slot_index = i
+					break
+			if highlighted_slot:
+				highlighted_slot.modulate = Color(1, 1, 1) # Reset
+			highlighted_slot = slots[(current_slot_index - 1) % slots.size()]
+			highlighted_slot.modulate = Color(0.7, 0.7, 0.7)
+		
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			var current_slot_index: int = 0
+			for i in range(slots.size()):
+				if slots[i] == highlighted_slot:
+					current_slot_index = i
+					break
+			if highlighted_slot:
+				highlighted_slot.modulate = Color(1, 1, 1) # Reset
+			highlighted_slot = slots[(current_slot_index + 1) % slots.size()]
+			highlighted_slot.modulate = Color(0.7, 0.7, 0.7)
 

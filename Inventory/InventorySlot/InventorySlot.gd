@@ -12,11 +12,12 @@ class_name InventorySlot
 
 
 enum InventorySlotAction {
-	SELECT, SPLIT
+	SELECT, SPLIT, # FOR ITEM SELECTION
+	NEXT, PREVIOUS # FOR HIGHLIGHTED SLOT CHANGE
 }
 
 
-signal slot_pressed(which: InventorySlot, action: InventorySlotAction)
+signal slot_input(which: InventorySlot, action: InventorySlotAction)
 signal slot_hovered(which: InventorySlot, is_hovering: bool)
 
 
@@ -29,12 +30,20 @@ func _ready():
 func _on_texture_button_gui_input(event):
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			slot_pressed.emit(
+			slot_input.emit(
 				self, InventorySlotAction.SELECT
 			)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			slot_pressed.emit(
+			slot_input.emit(
 				self, InventorySlotAction.SPLIT
+			)
+		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			slot_input.emit(
+				self, InventorySlotAction.PREVIOUS
+			)
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			slot_input.emit(
+				self, InventorySlotAction.NEXT
 			)
 
 

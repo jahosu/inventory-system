@@ -23,8 +23,10 @@ columns = 6
 
 [node name="Tooltip" parent="." instance=ExtResource("3_oh8lo")]
 layout_mode = 0
-offset_left = -312.127
-offset_top = 571.654
-offset_right = -312.127
-offset_bottom = 635.654
+offset_left = 463.699
+offset_top = 142.858
+offset_right = 463.699
+offset_bottom = 206.858
 mouse_filter = 2
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
