@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dvdp7mw5wu4g7"]
+[gd_scene load_steps=6 format=3 uid="uid://dvdp7mw5wu4g7"]
 
 [ext_resource type="Texture2D" uid="uid://d1brynw572smu" path="res://icon.svg" id="1_hnmx1"]
 [ext_resource type="Script" path="res://TestScene/Player/Player.gd" id="1_yobv6"]
 [ext_resource type="PackedScene" uid="uid://cb8vtncgwgknh" path="res://Inventory/Inventory.tscn" id="3_435wv"]
+[ext_resource type="PackedScene" uid="uid://slj1mva2a2fn" path="res://Hotbar/Hotbar.tscn" id="4_wih32"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hshhu"]
 radius = 83.0
@@ -21,19 +22,17 @@ shape = SubResource("CircleShape2D_hshhu")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Inventory2" parent="CanvasLayer" instance=ExtResource("3_435wv")]
-offset_left = 221.0
-offset_top = 492.0
-offset_right = 221.0
-offset_bottom = 492.0
-rows = 2
-cols = 2
+[node name="Hotbar" parent="CanvasLayer" instance=ExtResource("4_wih32")]
+offset_left = 537.0
+offset_top = 552.0
+offset_right = 537.0
+offset_bottom = 552.0
 
 [node name="Inventory" parent="CanvasLayer" instance=ExtResource("3_435wv")]
-offset_left = 705.0
-offset_top = 427.0
-offset_right = 705.0
-offset_bottom = 427.0
+offset_left = 599.0
+offset_top = 335.0
+offset_right = 599.0
+offset_bottom = 335.0
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

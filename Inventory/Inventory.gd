@@ -16,10 +16,7 @@ var slots: Array[InventorySlot]
 @export var tooltip: Tooltip # Must be shared among all instanesself
 
 
-
 static var selected_item: Item = null
-static var highlighted_slot: InventorySlot = null
-
 
 
 func _ready():
@@ -152,34 +149,3 @@ func remove_all(_name: String) -> void:
 func clear_inventory() -> void:
 	for slot in slots:
 		slot.remove_item()
-
-
-
-
-
-# Inventory-wide GUI input (for changing highlighted slots)
-func _on_gui_input(event):
-	# Update highlighted slot
-	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			var current_slot_index: int = 0
-			for i in range(slots.size()):
-				if slots[i] == highlighted_slot:
-					current_slot_index = i
-					break
-			if highlighted_slot:
-				highlighted_slot.modulate = Color(1, 1, 1) # Reset
-			highlighted_slot = slots[(current_slot_index - 1) % slots.size()]
-			highlighted_slot.modulate = Color(0.7, 0.7, 0.7)
-		
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			var current_slot_index: int = 0
-			for i in range(slots.size()):
-				if slots[i] == highlighted_slot:
-					current_slot_index = i
-					break
-			if highlighted_slot:
-				highlighted_slot.modulate = Color(1, 1, 1) # Reset
-			highlighted_slot = slots[(current_slot_index + 1) % slots.size()]
-			highlighted_slot.modulate = Color(0.7, 0.7, 0.7)
-

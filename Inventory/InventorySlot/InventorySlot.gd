@@ -13,7 +13,6 @@ class_name InventorySlot
 
 enum InventorySlotAction {
 	SELECT, SPLIT, # FOR ITEM SELECTION
-	NEXT, PREVIOUS # FOR HIGHLIGHTED SLOT CHANGE
 }
 
 
@@ -36,14 +35,6 @@ func _on_texture_button_gui_input(event):
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			slot_input.emit(
 				self, InventorySlotAction.SPLIT
-			)
-		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			slot_input.emit(
-				self, InventorySlotAction.PREVIOUS
-			)
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			slot_input.emit(
-				self, InventorySlotAction.NEXT
 			)
 
 
