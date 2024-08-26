@@ -1,19 +1,47 @@
-[gd_scene load_steps=6 format=3 uid="uid://dvdp7mw5wu4g7"]
+[gd_scene load_steps=11 format=3 uid="uid://dvdp7mw5wu4g7"]
 
-[ext_resource type="Texture2D" uid="uid://d1brynw572smu" path="res://icon.svg" id="1_hnmx1"]
 [ext_resource type="Script" path="res://TestScene/Player/Player.gd" id="1_yobv6"]
 [ext_resource type="PackedScene" uid="uid://cb8vtncgwgknh" path="res://Inventory/Inventory.tscn" id="3_435wv"]
-[ext_resource type="PackedScene" uid="uid://slj1mva2a2fn" path="res://Hotbar/Hotbar.tscn" id="4_wih32"]
+[ext_resource type="Texture2D" uid="uid://ckylv4dht4gno" path="res://TestAssets/24by24ModernRPGGuy.png" id="3_wwnqx"]
+[ext_resource type="PackedScene" uid="uid://dxa28mq6jco3o" path="res://Inventory/InventorySlot/InventoryItem/InventoryItem.tscn" id="4_44syj"]
+[ext_resource type="Texture2D" uid="uid://dwc3aed1auf3s" path="res://TestAssets/496_RPG_icons/Ac_Necklace06.png" id="5_572ps"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hshhu"]
 radius = 83.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("inventory")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ctwmf"]
+atlas = ExtResource("3_wwnqx")
+region = Rect2(24, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ldegj"]
+atlas = ExtResource("3_wwnqx")
+region = Rect2(48, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s4jew"]
+atlas = ExtResource("3_wwnqx")
+region = Rect2(72, 48, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vcbsw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ctwmf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ldegj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s4jew")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("inventory", "test_hint_item")]
 script = ExtResource("1_yobv6")
 inventory = NodePath("CanvasLayer/Inventory")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_hnmx1")
+test_hint_item = NodePath("InventoryItem")
 
 [node name="Area2D" type="Area2D" parent="."]
 
@@ -22,17 +50,25 @@ shape = SubResource("CircleShape2D_hshhu")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Hotbar" parent="CanvasLayer" instance=ExtResource("4_wih32")]
-offset_left = 537.0
-offset_top = 552.0
-offset_right = 537.0
-offset_bottom = 552.0
-
 [node name="Inventory" parent="CanvasLayer" instance=ExtResource("3_435wv")]
-offset_left = 599.0
-offset_top = 335.0
-offset_right = 599.0
-offset_bottom = 335.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(5.585, 5.585)
+sprite_frames = SubResource("SpriteFrames_vcbsw")
+frame_progress = 0.546665
+
+[node name="InventoryItem" parent="." instance=ExtResource("4_44syj")]
+amount = 3
+item_name = "Necklace of Charisma"
+icon = ExtResource("5_572ps")
+is_stackable = true
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

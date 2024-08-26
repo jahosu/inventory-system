@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c5sd0cdi2efid"]
 
 [ext_resource type="Script" path="res://Items/Item.gd" id="1_6jssa"]
-[ext_resource type="Texture2D" uid="uid://d1brynw572smu" path="res://icon.svg" id="2_b3g0k"]
+[ext_resource type="Texture2D" uid="uid://cr2mbiwnpuiy8" path="res://TestAssets/496_RPG_icons/Ac_Necklace02.png" id="3_by5fs"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ww0on"]
 radius = 26.0192
@@ -9,12 +9,14 @@ radius = 26.0192
 [node name="Amulet" type="Area2D"]
 script = ExtResource("1_6jssa")
 item_name = "Amulet"
-icon = ExtResource("2_b3g0k")
+icon = ExtResource("3_by5fs")
 is_stackable = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("2_b3g0k")
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("3_by5fs")
+region_rect = Rect2(0.703102, 64.9395, 7.6366, 6.58327)
+region_filter_clip_enabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ww0on")

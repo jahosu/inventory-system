@@ -8,20 +8,27 @@ var speed = 200
 
 func _ready():
 	test_hint_item.get_parent().remove_child.call_deferred(test_hint_item)
-	test_hint_item.name = "test"
+	test_hint_item.name = "Necklace of Charisma"
 	inventory.slots[0].set_item_hint.call_deferred(test_hint_item)
+	pass
 
 
 func _process(delta):
 	velocity *= 0
+	($AnimatedSprite2D as AnimatedSprite2D).pause()
 	if Input.is_action_pressed("ui_right"):
 		velocity.x += 1
+		($AnimatedSprite2D as AnimatedSprite2D).play("default")
 	if Input.is_action_pressed("ui_left"):
 		velocity.x -= 1
+		($AnimatedSprite2D as AnimatedSprite2D).play("default")
 	if Input.is_action_pressed("ui_down"):
 		velocity.y += 1
+		($AnimatedSprite2D as AnimatedSprite2D).play("default")
 	if Input.is_action_pressed("ui_up"):
 		velocity.y -= 1
+		($AnimatedSprite2D as AnimatedSprite2D).play("default")
+
 
 	velocity = velocity.normalized() * speed
 	move_and_slide()

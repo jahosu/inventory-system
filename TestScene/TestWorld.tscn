@@ -1,28 +1,22 @@
-[gd_scene load_steps=8 format=3 uid="uid://6wd0kccr30wj"]
+[gd_scene load_steps=7 format=3 uid="uid://6wd0kccr30wj"]
 
 [ext_resource type="Script" path="res://TestScene/TestWorld.gd" id="1_ry4x2"]
+[ext_resource type="Texture2D" uid="uid://dt3ujv613sxbx" path="res://TestAssets/Untitled.jpg" id="2_abrja"]
 [ext_resource type="PackedScene" uid="uid://dvdp7mw5wu4g7" path="res://TestScene/Player/Player.tscn" id="4_b3s1x"]
 [ext_resource type="PackedScene" uid="uid://4wgkn6w2kwum" path="res://Items/Cherry.tscn" id="4_y32l2"]
 [ext_resource type="PackedScene" uid="uid://c5sd0cdi2efid" path="res://Items/Amulet.tscn" id="5_c3tep"]
-[ext_resource type="PackedScene" uid="uid://dxa28mq6jco3o" path="res://Inventory/InventorySlot/InventoryItem/InventoryItem.tscn" id="5_q8iq1"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_t6b6a"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jvvh1"]
-noise = SubResource("FastNoiseLite_t6b6a")
+[ext_resource type="PackedScene" uid="uid://3wsbywoaf7ll" path="res://Items/Necklace of Charisma.tscn" id="6_hj77p"]
 
 [node name="TestWorld" type="Node2D"]
 script = ExtResource("1_ry4x2")
 
-[node name="Player" parent="." node_paths=PackedStringArray("test_hint_item") instance=ExtResource("4_b3s1x")]
-position = Vector2(374, 396)
-test_hint_item = NodePath("../InventoryItem")
+[node name="Untitled" type="Sprite2D" parent="."]
+position = Vector2(431, 336)
+scale = Vector2(3, 3)
+texture = ExtResource("2_abrja")
 
-[node name="InventoryItem" parent="." instance=ExtResource("5_q8iq1")]
-amount = 3
-item_name = "Cherry"
-icon = SubResource("NoiseTexture2D_jvvh1")
-is_stackable = true
+[node name="Player" parent="." instance=ExtResource("4_b3s1x")]
+position = Vector2(374, 396)
 
 [node name="Cherry" parent="." instance=ExtResource("4_y32l2")]
 position = Vector2(52, 321)
@@ -38,3 +32,15 @@ position = Vector2(54, 87)
 
 [node name="Amulet2" parent="." instance=ExtResource("5_c3tep")]
 position = Vector2(400, 83)
+
+[node name="Necklace of Charisma" parent="." instance=ExtResource("6_hj77p")]
+position = Vector2(792, 153)
+
+[node name="Necklace of Charisma2" parent="." instance=ExtResource("6_hj77p")]
+position = Vector2(858, 176)
+
+[node name="Necklace of Charisma3" parent="." instance=ExtResource("6_hj77p")]
+position = Vector2(820, 180)
+
+[node name="Necklace of Charisma4" parent="." instance=ExtResource("6_hj77p")]
+position = Vector2(828, 127)
