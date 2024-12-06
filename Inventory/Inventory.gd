@@ -5,7 +5,7 @@ class_name Inventory
 
 var inventory_item_scene = preload("res://Inventory/InventorySlot/InventoryItem/InventoryItem.tscn")
 
-@export var rows: int = 3
+@export var rows: int = 1
 @export var cols: int = 6
 
 @export var inventory_grid: GridContainer
